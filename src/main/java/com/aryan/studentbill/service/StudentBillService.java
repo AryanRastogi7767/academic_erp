@@ -30,4 +30,13 @@ public class StudentBillService {
                 .map(StudentBillMapper::toDTO)
                 .collect(Collectors.toList());
     }
+    // Get bills by student's roll number
+    public List<StudentBillDTO> getBillsByRollNumber(String rollNumber) {
+        List<StudentBills> studentBills = studentBillRepository.findByStudent_RollNumber(rollNumber);
+        return studentBills.stream()
+                .map(StudentBillMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
 }
