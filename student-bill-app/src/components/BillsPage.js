@@ -51,6 +51,12 @@ const BillsPage = () => {
         fetchBillsAndPayments();
     }, []); // Only runs once when the component is mounted
 
+    // Logout functionality
+    const handleLogout = () => {
+        localStorage.removeItem('rollNumber');
+        localStorage.removeItem('token');
+        navigate('/login'); // Redirect to login page
+    };
     // Calculate total payments made for a specific bill
     const getTotalPaymentsForBill = (billId) => {
         const billPayments = payments[billId] || []; // Get payments for this billId
@@ -65,8 +71,14 @@ const BillsPage = () => {
 
     return (
         <div>
-            <h1>Student Bills</h1>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {/*<h1>Student Bills</h1>*/}
+            {/*{error && <p style={{ color: 'red' }}>{error}</p>}*/}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', }}>
+                <h1>Student Bills</h1>
+                <Button variant="danger" onClick={handleLogout}>
+                    Logout
+                </Button>
+            </div>
 
             <Table striped bordered hover>
                 <thead>
