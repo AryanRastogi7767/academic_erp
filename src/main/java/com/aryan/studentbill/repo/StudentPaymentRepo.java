@@ -15,4 +15,7 @@ public interface StudentPaymentRepo extends JpaRepository<StudentPayment, Long> 
 
     // Custom query method to find payments by billId
     List<StudentPayment> findByBill_BillId(Long billId);
+
+    // Custom query method to find payments by studentId and billId
+    List<StudentPayment> findByStudent_StudentIdAndBill_BillId(Long studentId, Long billId);
 }

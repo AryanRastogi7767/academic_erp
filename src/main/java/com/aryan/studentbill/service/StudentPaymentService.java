@@ -30,4 +30,11 @@ public class StudentPaymentService {
                 .map(StudentPaymentMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<StudentPaymentDTO> getPaymentsByStudentIdAndBillId(Long studentId, Long billId) {
+        List<StudentPayment> payments = studentPaymentRepository.findByStudent_StudentIdAndBill_BillId(studentId, billId);
+        return payments.stream()
+                .map(StudentPaymentMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }

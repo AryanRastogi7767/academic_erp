@@ -1,0 +1,60 @@
+/* PaymentsPage.css */
+
+.container {
+    margin-top: 1.5rem;
+}
+
+.heading {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.subheading {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+}
+
+.loading-message {
+    text-align: center;
+}
+
+.table-header {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+.table-cell {
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+.receipt-table {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.payment-table {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+}
+
+.payment-actions {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.go-back-btn {
+    margin-top: 1rem;
+    display: inline-block;
+    text-align: center;
+}

@@ -12,7 +12,6 @@ const BillsPage = () => {
 
     useEffect(() => {
         const fetchBillsAndPayments = async () => {
-            const rollNumber = localStorage.getItem('rollNumber');
             const token = localStorage.getItem('token');
             if (!rollNumber) {
                 setError('No roll number found in localStorage');
@@ -29,15 +28,25 @@ const BillsPage = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
+
+                // Save the studentId from the first bill (assuming all bills have the same studentId)
+                if (billResponse.data.length > 0) {
+                    localStorage.setItem('studentId', billResponse.data[0].studentId);
+                }
+
                 setBills(billResponse.data);
 
+                // Fetch payments for each bill using the studentId from localStorage
                 const paymentsMap = {};
                 for (const bill of billResponse.data) {
-                    const paymentResponse = await API.get(`/student-payments/bill/${bill.billId}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
+                    const paymentResponse = await API.get(
+                        `/student-payments/${bill.studentId}/bill/${bill.billId}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
                     paymentsMap[bill.billId] = paymentResponse.data;
                 }
                 setPayments(paymentsMap);
@@ -48,11 +57,12 @@ const BillsPage = () => {
         };
 
         fetchBillsAndPayments();
-    }, [navigate]);
+    }, [rollNumber, navigate]);
 
     const handleLogout = () => {
         localStorage.removeItem('rollNumber');
         localStorage.removeItem('token');
+        localStorage.removeItem('studentId'); // Clear the studentId on logout
         navigate('/login');
     };
 
@@ -62,7 +72,12 @@ const BillsPage = () => {
     };
 
     const handleViewPayments = (billId) => {
-        navigate(`/payments/${billId}`);
+        const studentId = localStorage.getItem('studentId'); // Retrieve studentId from localStorage
+        if (!studentId) {
+            setError('Student ID not available. Please log in again.');
+            return;
+        }
+        navigate(`/payments/${studentId}/${billId}`);
     };
 
     return (
@@ -123,7 +138,6 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        // minHeight: '100vh', // Vertically center
         padding: '20px',
         backgroundColor: '#f8f9fa',
     },
@@ -132,7 +146,7 @@ const styles = {
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        maxWidth: '1300px', // Limit width of the content
+        maxWidth: '1300px',
         marginBottom: '20px',
     },
     table: {

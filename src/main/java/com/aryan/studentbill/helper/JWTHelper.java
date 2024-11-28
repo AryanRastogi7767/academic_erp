@@ -46,7 +46,7 @@ public class JWTHelper {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Token valid for 10 hours
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Token valid for 1 hour
                 .signWith(SignatureAlgorithm.HS256, "q3J1dSNDk92jlRmXx8I+EkvFHrHXxhoNf6OMtGHu9jY=")
                 .compact();
     }

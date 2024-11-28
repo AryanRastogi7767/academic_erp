@@ -29,4 +29,11 @@ public class StudentPaymentController {
     public List<StudentPaymentDTO> getPaymentsByBillId(@PathVariable Long billId) {
         return studentPaymentService.getPaymentsByBillId(billId);
     }
+
+    // Get payments for a specific student and bill
+    @GetMapping("/{studentId}/bill/{billId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<StudentPaymentDTO> getPaymentsByStudentIdAndBillId(@PathVariable Long studentId, @PathVariable Long billId) {
+        return studentPaymentService.getPaymentsByStudentIdAndBillId(studentId, billId);
+    }
 }
