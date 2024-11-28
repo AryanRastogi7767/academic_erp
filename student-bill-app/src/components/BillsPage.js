@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importing useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import API from '../api';
 import { Table, Button } from 'react-bootstrap';
 
@@ -7,11 +7,12 @@ const BillsPage = () => {
     const [bills, setBills] = useState([]);
     const [payments, setPayments] = useState({});
     const [error, setError] = useState('');
-    const navigate = useNavigate(); // For navigation to payment page
+    const navigate = useNavigate();
+    const rollNumber = localStorage.getItem('rollNumber');
 
     useEffect(() => {
         const fetchBillsAndPayments = async () => {
-            const rollNumber = localStorage.getItem('rollNumber'); // Ensure rollNumber is stored in localStorage
+            const rollNumber = localStorage.getItem('rollNumber');
             const token = localStorage.getItem('token');
             if (!rollNumber) {
                 setError('No roll number found in localStorage');
@@ -23,7 +24,6 @@ const BillsPage = () => {
             }
 
             try {
-                // Fetch bills
                 const billResponse = await API.get(`/student-bills/student-roll/${rollNumber}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -31,7 +31,6 @@ const BillsPage = () => {
                 });
                 setBills(billResponse.data);
 
-                // Fetch payments for each bill
                 const paymentsMap = {};
                 for (const bill of billResponse.data) {
                     const paymentResponse = await API.get(`/student-payments/bill/${bill.billId}`, {
@@ -39,9 +38,9 @@ const BillsPage = () => {
                             Authorization: `Bearer ${token}`,
                         },
                     });
-                    paymentsMap[bill.billId] = paymentResponse.data; // Store payments by billId
+                    paymentsMap[bill.billId] = paymentResponse.data;
                 }
-                setPayments(paymentsMap); // Set the payments for each bill
+                setPayments(paymentsMap);
             } catch (err) {
                 console.error('Error fetching data:', err);
                 setError('Failed to load bills and payments');
@@ -49,38 +48,35 @@ const BillsPage = () => {
         };
 
         fetchBillsAndPayments();
-    }, []); // Only runs once when the component is mounted
+    }, [navigate]);
 
-    // Logout functionality
     const handleLogout = () => {
         localStorage.removeItem('rollNumber');
         localStorage.removeItem('token');
-        navigate('/login'); // Redirect to login page
-    };
-    // Calculate total payments made for a specific bill
-    const getTotalPaymentsForBill = (billId) => {
-        const billPayments = payments[billId] || []; // Get payments for this billId
-        const totalPayments = billPayments.reduce((sum, payment) => sum + payment.amountPaid, 0);
-        return totalPayments;
+        navigate('/login');
     };
 
-    // Handle navigation to the payment page for a specific bill
+    const getTotalPaymentsForBill = (billId) => {
+        const billPayments = payments[billId] || [];
+        return billPayments.reduce((sum, payment) => sum + payment.amountPaid, 0);
+    };
+
     const handleViewPayments = (billId) => {
         navigate(`/payments/${billId}`);
     };
 
     return (
-        <div>
-            {/*<h1>Student Bills</h1>*/}
-            {/*{error && <p style={{ color: 'red' }}>{error}</p>}*/}
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', }}>
-                <h1>Student Bills</h1>
+        <div style={styles.pageContainer}>
+            <div style={styles.headerContainer}>
+                <h1>Student Bills for {rollNumber}</h1>
                 <Button variant="danger" onClick={handleLogout}>
                     Logout
                 </Button>
             </div>
 
-            <Table striped bordered hover>
+            {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+
+            <Table striped bordered hover style={styles.table}>
                 <thead>
                 <tr>
                     <th>Bill ID</th>
@@ -119,6 +115,31 @@ const BillsPage = () => {
             </Table>
         </div>
     );
+};
+
+const styles = {
+    pageContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        // minHeight: '100vh', // Vertically center
+        padding: '20px',
+        backgroundColor: '#f8f9fa',
+    },
+    headerContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        maxWidth: '1300px', // Limit width of the content
+        marginBottom: '20px',
+    },
+    table: {
+        width: '100%',
+        maxWidth: '1300px',
+        backgroundColor: 'white',
+    },
 };
 
 export default BillsPage;

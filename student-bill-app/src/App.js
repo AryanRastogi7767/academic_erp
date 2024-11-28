@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes , Navigate} from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import BillsPage from './components/BillsPage';
 import PaymentsPage from './components/PaymentsPage';
@@ -17,6 +17,7 @@ const App = () => {
       <Router>
         <Routes>
           {/* Login Route */}
+            <Route index element={<Navigate to={"/login"}/>}/>
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
 
           {/* Bills Route */}

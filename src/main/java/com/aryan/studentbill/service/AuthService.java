@@ -32,16 +32,7 @@ public class AuthService {
         // Retrieve the student from the database using the roll number
         Optional<Students> student = studentRepository.findByRollNumber(loginRequest.rollNumber());
 
-//        // Check if the student exists and the password matches
-//        if (studentOpt.isPresent()) {
-//            Students student = studentOpt.get();
-//            if (passwordEncoder.matches(loginRequest.password(), student.getPassword())) {
-//                // Generate JWT token using student ID or other details (ensure to get the correct data)
-//                String token = JWTHelper.generateToken(String.valueOf(student.getStudentId())); // Correctly extract student ID
-//                System.out.println(token);
-//                return new LoginResponse(token); // Return the JWT token
-//            }
-//        }
+
         if(!encryptionService.validates(loginRequest.password(), student.get().getPassword())) {
             return "Wrong roll no. or password";
         }
