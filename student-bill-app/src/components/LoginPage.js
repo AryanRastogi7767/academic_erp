@@ -34,7 +34,6 @@ const LoginPage = ({ onLogin }) => {
                 setError('Invalid credentials. Please try again.');
             }
         } catch (err) {
-            // Handle any other errors (e.g., network issues)
             setError('Invalid credentials. Please try again.');
         }
     };

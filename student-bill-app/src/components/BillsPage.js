@@ -114,7 +114,7 @@ const BillsPage = () => {
                             <td>{bill.billDescription}</td>
                             <td>₹{bill.billAmount}</td>
                             <td>{bill.billDeadline}</td>
-                            <td>{isPaid ? 'Paid' : `Due ₹${amountDue.toFixed(2)}`}</td>
+                            <td>{isPaid ? 'Paid' : `Due : ₹${amountDue.toFixed(2)}`}</td>
                             <td>
                                 <Button
                                     variant="primary"
