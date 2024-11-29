@@ -14,33 +14,6 @@ This is a full-stack project for managing and viewing student bills and their pa
 
 ---
 
-## Project Structure
-
-Student Bill Project
-├── backend/  
-│ ├── src/  
-│ │ ├── main/java/com/example/billproject/  
-│ │ │ ├── controller/  
-│ │ │ ├── model/  
-│ │ │ ├── repository/  
-│ │ │ ├── service/  
-│ │ │ └── BillProjectApplication.java  
-│ └── pom.xml  
-├── frontend/  
-│ ├── public/  
-│ ├── src/  
-│ │ ├── components/  
-│ │ │ ├── BillsPage.js  
-│ │ │ ├── PaymentsPage.js  
-│ │ │ └── LoginPage.js  
-│ │ ├── api.js  
-│ │ └── App.js  
-│ └── package.json  
-└── README.md  
-
-
----
-
 ## Technologies Used
 
 ### Frontend
